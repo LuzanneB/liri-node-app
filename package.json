@@ -1,0 +1,32 @@
+{
+  "name": "liri_bot",
+  "version": "1.0.0",
+  "description": "Liri returns info",
+  "main": "liri.js",
+  "scripts": {
+    "test": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuzanneB/liri-node-app.git"
+  },
+  "keywords": [
+    "Liri",
+    "OMDB",
+    "BandsinTown",
+    "Spotify",
+    "Axios"
+  ],
+  "author": "Luzanne Burt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuzanneB/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/LuzanneB/liri-node-app#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.0.0",
+    "moment": "^2.24.0",
+    "node-spotify-api": "^1.1.1"
+  }
+}
