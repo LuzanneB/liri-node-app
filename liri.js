@@ -7,7 +7,7 @@ const moment = require("moment");
 // store all of the arguments in an array
 let nodeArgs = process.argv
 //  create empty variable to hold user input
-var userInput = ""
+let userInput = ""
 // loop through user entry to generate userInput
 for (var i = 2; i < nodeArgs.length; i++) {
 
@@ -18,6 +18,41 @@ for (var i = 2; i < nodeArgs.length; i++) {
       }
   }
 
+ // create function movie-this
+        // query url
+let queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+
+function movie-this(){
+// if there is no movie inputed, search for Mr.Nobody
+    if (userInput===""){
+        let userInput = "Mr.Nobody"
+    }
+ // if movie title was inputed, search OMDB API and return:
+    axios.get(queryUrl).then(
+        function(response) {
+        // * Title of the movie. - Title
+            console.log("Title: " + response.data.Title);
+         // * Year the movie came out. - Year
+            console.log("Release Year: "+ response.data.Year);            
+        // * IMDB Rating of the movie. - imdbRating
+            console.log("IMDB Rating: "+ response.data.imdbRating);    
+        // * Rotten Tomatoes Rating of the movie.-response.data.Ratings[1].Value
+            console.log("Rotten Tomatoes Rating: "+ response.data.Ratings[1].Value);    
+        // * Country where the movie was produced. -Country
+            console.log("Country: "+ response.data.Country);    
+        // * Language of the movie. - Language
+            console.log("Language: "+ response.data.Language);    
+        // * Plot of the movie. - Plot
+            console.log("Plot: "+ response.data.Plot);    
+        // * Actors in the movie. - Actors
+            console.log("Plot: "+ response.data.Actor);    
+        })
+
+};
+        
+       
+           
+         
 // create functions for Liri to respond to
     // create function concert-this:
         // this will search BIT API and  return the following about each event:
@@ -33,19 +68,6 @@ for (var i = 2; i < nodeArgs.length; i++) {
             // A preview link of the song from spotify
             // Album the song is from
       
-    // create function movie-this
-
-        // query url "http://www.omdbapi.com/?t=+movie+&y=&plot=short&apikey=trilogy"
-        // if there is no movie inputed, search for Mr.Nobody
-        // if movie title was inputed, search OMDB API and return:
-            // * Title of the movie. - Title
-            // * Year the movie came out. - Year
-            // * IMDB Rating of the movie. - imdbRating
-            // * Rotten Tomatoes Rating of the movie.-response.data.Ratings[1].Value
-            // * Country where the movie was produced. -Country
-            // * Language of the movie. - Language
-            // * Plot of the movie. - Plot
-            // * Actors in the movie. - Actors
-
+   
     // create function do-what-it-says
         // should run spotify-this-son from random.txt
