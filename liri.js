@@ -29,9 +29,9 @@ function movieThis(){
 let queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
 // if there is no movie inputed, search for Mr.Nobody
 
-    // if (userInput===""){
-    //     let userInput = "Mr.Nobody"
-    // }
+    if (userInput===""){
+        let userInput = "Mr.Nobody"
+    }
  // if movie title was inputed, search OMDB API and return:
     axios.get(queryUrl).then(
         function(response) {
