@@ -3,30 +3,35 @@ const keys = require("./keys.js");
 const axios = require("axios");
 const spotify = require("node-spotify-api");
 const moment = require("moment");
+const command = process.argv[2];
+console.log (command);
 
 // store all of the arguments in an array
 let nodeArgs = process.argv
 //  create empty variable to hold user input
 let userInput = ""
 // loop through user entry to generate userInput
-for (var i = 2; i < nodeArgs.length; i++) {
+for (var i = 3; i < nodeArgs.length; i++) {
 
-    if (i > 2 && i < nodeArgs.length) {
+    if (i > 3 && i < nodeArgs.length) {
       userInput = userInput + "+" + nodeArgs[i];
     } else {
       userInput += nodeArgs[i];
       }
-  }
+  };
 
+  console.log ("userInput:" + userInput);
  // create function movie-this
-        // query url
-let queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
-function movie-this(){
+
+function movieThis(){
+        // query url
+let queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
 // if there is no movie inputed, search for Mr.Nobody
-    if (userInput===""){
-        let userInput = "Mr.Nobody"
-    }
+
+    // if (userInput===""){
+    //     let userInput = "Mr.Nobody"
+    // }
  // if movie title was inputed, search OMDB API and return:
     axios.get(queryUrl).then(
         function(response) {
@@ -49,7 +54,7 @@ function movie-this(){
         })
 
 };
-        
+      
        
            
          
