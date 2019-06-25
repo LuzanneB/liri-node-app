@@ -7,8 +7,6 @@ const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
 
 const command = process.argv[2];
-console.log ("command is: "+ command);
-
 
  // create function movie-this to take in input
 function movieThis(){
@@ -20,7 +18,6 @@ function movieThis(){
     // queryURL
     let queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
   
-    console.log ("userInput:" + userInput);
  // if movie title was inputed, search OMDB API and return:
     axios.get(queryUrl).then(
         function(response) {
@@ -57,8 +54,7 @@ function concertThis(){
       // this will search BIT API for an artist and  return the following about each event:
     queryUrl=("https://rest.bandsintown.com/artists/"+userInput+"/events?app_id=codingbootcamp")
     
-    console.log ("userInput:" + userInput);
-    
+  
     axios.get(queryUrl).then(
         function(response) {
         // Name of Venue
@@ -66,13 +62,13 @@ function concertThis(){
         // venue location
             console.log("City, Country: " + response.data[0].venue.city +", "+ response.data[0].venue.country);
         // date of event (use moment for mm/dd/yyyy format)
-            console.log("Event Date: "+ response.data[0].datetime);
+            console.log("Event Date: "+ moment(response.data[0].datetime).format("MM DD YYYY"));
         })
     .catch(function(err) {
         console.log(err);
           });
     
-close function
+// close function
 };
       
         
@@ -81,20 +77,21 @@ close function
 function spotifyThisSong(){
     let userInput = process.argv.slice(3).join(" ");
 
-spotify
-  .search({ type: 'track', query: userInput, limit:1 })
-  .then(function(response) {
-    console.log(JSON.stringify(response, null, 2));
+    spotify.search({ type: 'track', query: userInput, limit:1 }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
+    // Artist Name
+        console.log("Artist Name: "+ data.tracks.items[0].artists[0].name); 
+    // Song Name
+        console.log("Song Name: "+ data.tracks.items[0].name); 
+    // A preview link of the song from spotify
+        console.log("Preview Link: "+ data.tracks.items[0].preview_url); 
+    // Album the song is from
+        console.log("Album Name: "+ data.tracks.items[0].album.name); 
+           });
+   
             // if there is not song inputed, return info for The Sign by AoB   
-        // if song was inputed will search Spotify API and return the following:
-            // Artist
-            // Song Name
-            // A preview link of the song from spotify
-            // Album the song is from
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
 
 // close function
 };
