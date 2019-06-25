@@ -10,11 +10,15 @@ const command = process.argv[2];
 
  // create function movie-this to take in input
 function movieThis(){
-
+    
     // store all of the arguments in an array
-    let userInput = process.argv.slice(3).join("+");
+   let userInput = process.argv.slice(3).join("+");
+   
     // if there is no movie inputed, search for Mr.Nobody
-
+    if (process.argv[3] === undefined){
+       userInput = "Mr.Nobody";
+    }
+ 
     // queryURL
     let queryUrl = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
   
@@ -51,6 +55,7 @@ function movieThis(){
 function concertThis(){
 
     let userInput = process.argv.slice(3).join("%20");
+
       // this will search BIT API for an artist and  return the following about each event:
     queryUrl=("https://rest.bandsintown.com/artists/"+userInput+"/events?app_id=codingbootcamp")
     
@@ -62,7 +67,7 @@ function concertThis(){
         // venue location
             console.log("City, Country: " + response.data[0].venue.city +", "+ response.data[0].venue.country);
         // date of event (use moment for mm/dd/yyyy format)
-            console.log("Event Date: "+ moment(response.data[0].datetime).format("MM DD YYYY"));
+            console.log("Event Date: "+ moment(response.data[0].datetime).format("MM/DD/YYYY"));
         })
     .catch(function(err) {
         console.log(err);
@@ -77,6 +82,11 @@ function concertThis(){
 function spotifyThisSong(){
     let userInput = process.argv.slice(3).join(" ");
 
+    // if there is not song inputed, return info for The Sign by AoB   
+    if (process.argv[3] === undefined){
+        userInput = "the sign ace of base";
+     }
+
     spotify.search({ type: 'track', query: userInput, limit:1 }, function(err, data) {
         if (err) {
           return console.log('Error occurred: ' + err);
@@ -89,21 +99,51 @@ function spotifyThisSong(){
         console.log("Preview Link: "+ data.tracks.items[0].preview_url); 
     // Album the song is from
         console.log("Album Name: "+ data.tracks.items[0].album.name); 
-           });
-   
-            // if there is not song inputed, return info for The Sign by AoB   
+           })
 
+    .catch(function(err) {
+        console.log(err);
+        });
+    
 // close function
 };
 
-      
+    
    
     // create function do-what-it-says
-        // should run spotify-this-son from random.txt
+function doWhatItSays(){
+    fs.readFile("random.txt","utf-8", function(error,data){
+        if (error){
+            console.log(error);
+        }
+    let arr= data.split(",")
+    command=arr[0];
+    var userInput=arr[1];
+    console.log(arr);
+    
+    switch (command) {
+        case "movieThis":
+            movieThis();
+            break;
+        
+        case "concertThis":
+            concertThis();
+            break;
+    
+        case "spotifyThisSong":
+            spotifyThisSong();
+            break;
+        case "doWhatItSays":
+            doWhatItSays();
+            break;
+        }    
+    })
+}
+        // should run spotify-this-song from random.txt
 
 
 
-// switch case
+// switch case to take in command and run corresponding function
 switch (command) {
     case "movieThis":
         movieThis();
@@ -116,5 +156,7 @@ switch (command) {
     case "spotifyThisSong":
         spotifyThisSong();
         break;
-
+    case "doWhatItSays":
+        doWhatItSays();
+        break;
     }
