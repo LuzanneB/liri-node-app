@@ -6,16 +6,25 @@ const moment = require("moment");
 const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
 
-const command = process.argv[2];
+let command = process.argv[2];
+let userInput = ""
+ 
+// decide how to join the user input based on command
+if (command === "movieThis"){
+    userInput = process.argv.slice(3).join("+");
+}
+    else if(command === "spotifyThisSong"){
+     userInput = process.argv.slice(3).join(" ");   
+    }
+    else {
+    userInput = process.argv.slice(3).join("%20");
+    }
 
  // create function movie-this to take in input
 function movieThis(){
-    
-    // store all of the arguments in an array
-   let userInput = process.argv.slice(3).join("+");
-   
+       
     // if there is no movie inputed, search for Mr.Nobody
-    if (process.argv[3] === undefined){
+    if (process.argv[3] === undefined && userInput === null){
        userInput = "Mr.Nobody";
     }
  
@@ -54,8 +63,6 @@ function movieThis(){
     // create function concert-this:
 function concertThis(){
 
-    let userInput = process.argv.slice(3).join("%20");
-
       // this will search BIT API for an artist and  return the following about each event:
     queryUrl=("https://rest.bandsintown.com/artists/"+userInput+"/events?app_id=codingbootcamp")
     
@@ -76,16 +83,14 @@ function concertThis(){
 // close function
 };
       
-        
-
     // create function spotify-this-song
-function spotifyThisSong(){
-    let userInput = process.argv.slice(3).join(" ");
-
+function spotifyThisSong(userInput){
+    
     // if there is not song inputed, return info for The Sign by AoB   
-    if (process.argv[3] === undefined){
+    if (process.argv[3] === undefined && userInput=== null){
         userInput = "the sign ace of base";
      }
+     
 
     spotify.search({ type: 'track', query: userInput, limit:1 }, function(err, data) {
         if (err) {
@@ -101,15 +106,11 @@ function spotifyThisSong(){
         console.log("Album Name: "+ data.tracks.items[0].album.name); 
            })
 
-    .catch(function(err) {
-        console.log(err);
-        });
     
 // close function
 };
 
-    
-   
+ 
     // create function do-what-it-says
 function doWhatItSays(){
     fs.readFile("random.txt","utf-8", function(error,data){
@@ -118,23 +119,22 @@ function doWhatItSays(){
         }
     let arr= data.split(",")
     command=arr[0];
-    var userInput=arr[1];
-    console.log(arr);
-    
+    userInput=arr[1];
+     
     switch (command) {
         case "movieThis":
-            movieThis();
+            movieThis(userInput);
             break;
         
         case "concertThis":
-            concertThis();
+            concertThis(userInput);
             break;
     
         case "spotifyThisSong":
-            spotifyThisSong();
+            spotifyThisSong(userInput);
             break;
         case "doWhatItSays":
-            doWhatItSays();
+            doWhatItSays(userInput);
             break;
         }    
     })
