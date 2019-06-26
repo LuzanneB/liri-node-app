@@ -1,4 +1,5 @@
 require("dotenv").config();
+const chalk = require('chalk');
 const fs = require ("fs");
 const keys = require("./keys.js");
 const axios = require("axios");
@@ -7,7 +8,7 @@ const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
 
 let command = process.argv[2];
-let userInput = ""
+let userInput = null
  
 // decide how to join the user input based on command
 if (command === "movieThis"){
@@ -24,7 +25,7 @@ if (command === "movieThis"){
 function movieThis(){
        
     // if there is no movie inputed, search for Mr.Nobody
-    if (process.argv[3] === undefined && userInput === null){
+    if (process.argv[3] === undefined){
        userInput = "Mr.Nobody";
     }
  
@@ -34,26 +35,26 @@ function movieThis(){
  // if movie title was inputed, search OMDB API and return:
     axios.get(queryUrl).then(
         function(response) {
+            console.log(chalk.bgWhite("**********************************************************"));
         // * Title of the movie. - Title
-            console.log("Title: " + response.data.Title);
+            console.log(chalk.green("Title: " + response.data.Title));
          // * Year the movie came out. - Year
-            console.log("Release Year: "+ response.data.Year);            
+            console.log(chalk.green("Release Year: "+ response.data.Year));            
         // * IMDB Rating of the movie. - imdbRating
-            console.log("IMDB Rating: "+ response.data.imdbRating);    
+            console.log(chalk.red("IMDB Rating: "+ response.data.imdbRating));    
         // * Rotten Tomatoes Rating of the movie.-response.data.Ratings[1].Value
-            console.log("Rotten Tomatoes Rating: "+ response.data.Ratings[1].Value);    
+            console.log(chalk.red("Rotten Tomatoes Rating: "+ response.data.Ratings[1].Value));    
         // * Country where the movie was produced. -Country
-            console.log("Country: "+ response.data.Country);    
+            console.log(chalk.blue("Country: "+ response.data.Country));    
         // * Language of the movie. - Language
-            console.log("Language: "+ response.data.Language);    
+            console.log(chalk.blue("Language: "+ response.data.Language));
+         // * Actors in the movie. - Actors
+            console.log(chalk.yellow("Actors: "+ response.data.Actor));          
         // * Plot of the movie. - Plot
-            console.log("Plot: "+ response.data.Plot);    
-        // * Actors in the movie. - Actors
-            console.log("Plot: "+ response.data.Actor);    
-        })
-    .catch(function(err) {
-        console.log(err);
-            });
+            console.log(chalk.yellow("Plot: "+ response.data.Plot));
+            console.log(chalk.bgWhite("**********************************************************"));  
+        });  
+
 // close function
 };
             
@@ -69,12 +70,14 @@ function concertThis(){
   
     axios.get(queryUrl).then(
         function(response) {
+            console.log(chalk.bgYellow.yellow("**********************************************************"));
         // Name of Venue
-            console.log("Venue: " + response.data[0].venue.name);
+            console.log(chalk.magenta("Venue: " + response.data[0].venue.name));
         // venue location
-            console.log("City, Country: " + response.data[0].venue.city +", "+ response.data[0].venue.country);
+            console.log(chalk.cyan("City, Country: " + response.data[0].venue.city +", "+ response.data[0].venue.country));
         // date of event (use moment for mm/dd/yyyy format)
-            console.log("Event Date: "+ moment(response.data[0].datetime).format("MM/DD/YYYY"));
+            console.log(chalk.cyan("Event Date: "+ moment(response.data[0].datetime).format("MM/DD/YYYY")));
+            console.log(chalk.bgYellow.yellow("**********************************************************"));
         })
     .catch(function(err) {
         console.log(err);
@@ -84,26 +87,28 @@ function concertThis(){
 };
       
     // create function spotify-this-song
-function spotifyThisSong(userInput){
+function spotifyThisSong(){
     
     // if there is not song inputed, return info for The Sign by AoB   
-    if (process.argv[3] === undefined && userInput=== null){
+    if (process.argv[3] === undefined && userInput===""){
         userInput = "the sign ace of base";
      }
-     
+   
 
     spotify.search({ type: 'track', query: userInput, limit:1 }, function(err, data) {
         if (err) {
           return console.log('Error occurred: ' + err);
-        }
+        };
+        console.log(chalk.bgMagenta.magenta("**********************************************************"));
     // Artist Name
-        console.log("Artist Name: "+ data.tracks.items[0].artists[0].name); 
+        console.log(chalk.cyan("Artist Name: "+ data.tracks.items[0].artists[0].name)); 
     // Song Name
-        console.log("Song Name: "+ data.tracks.items[0].name); 
+        console.log(chalk.blue("Song Name: "+ data.tracks.items[0].name)); 
     // A preview link of the song from spotify
-        console.log("Preview Link: "+ data.tracks.items[0].preview_url); 
+        console.log(chalk.blue("Preview Link: "+ data.tracks.items[0].preview_url)); 
     // Album the song is from
-        console.log("Album Name: "+ data.tracks.items[0].album.name); 
+        console.log(chalk.blue("Album Name: "+ data.tracks.items[0].album.name)); 
+        console.log(chalk.bgMagenta.magenta("**********************************************************"));
            })
 
     
